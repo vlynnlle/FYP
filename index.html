@@ -17,25 +17,64 @@ font-family: Cambria, Garamond, "Book Antiqua", serif;
 
 /* NAVBAR */
 nav{
-display:flex;
-justify-content:center;
-gap:15px;
 background:#0b1e3d;
-padding:14px;
-border-bottom:1px solid rgba(255,255,255,0.1);
+padding:12px;
 }
 
-nav button{
+.nav-header{
+display:flex;
+justify-content:space-between;
+align-items:center;
+}
+
+.hamburger{
+font-size:22px;
+cursor:pointer;
+display:none;
+}
+
+.nav-links{
+display:flex;
+gap:12px;
+margin-top:10px;
+}
+
+.nav-links button{
 background:none;
 border:none;
-color:#ffffff;
-font-size:16px;
+color:white;
+padding:8px 12px;
+border-radius:20px;
 cursor:pointer;
-transition:0.3s;
+transition:0.2s;
 }
 
-nav button:hover{
+/* hover */
+.nav-links button:hover{
+background:rgba(255,255,255,0.15);
+}
+
+/* MOBILE MODE */
+@media (max-width: 600px){
+
+.hamburger{
+display:block;
+}
+.hamburger:hover{
 opacity:0.7;
+}
+
+.nav-links{
+display:none;
+flex-direction:column;
+gap:8px;
+margin-top:10px;
+}
+
+.nav-links.show{
+display:flex;
+}
+
 }
 
 /* CONTAINER */
@@ -118,12 +157,21 @@ line-height:1.6;
 <body>
 
 <nav>
+
+<div class="nav-header">
+<h2>FYP</h2>
+<div class="hamburger" onclick="toggleMenu()">☰</div>
+</div>
+
+<div id="navMenu" class="nav-links">
 <button onclick="show('home')">Home</button>
 <button onclick="show('test')">Assessment</button>
 <button onclick="show('tipe')">Tipe</button>
 <button onclick="show('jurusan')">Jurusan</button>
 <button onclick="show('karier')">Karier</button>
 <button onclick="show('explore')">Explore</button>
+</div>
+
 </nav>
 
 <div class="container">
@@ -364,6 +412,10 @@ document.getElementById(page).classList.remove("hidden");
 if(page==="tipe") loadTipeDetail();
 if(page==="jurusan") renderJurusan();
 if(page==="karier") renderKarier();
+}
+function toggleMenu(){
+let menu = document.getElementById("navMenu");
+menu.classList.toggle("show");
 }
 
 // CALCULATE
