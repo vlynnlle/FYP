@@ -1,0 +1,467 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FYP - Find Your Purpose</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;700&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+
+<style>
+body{
+margin:0;
+background:#0b1e3d;
+color:#ffffff;
+font-family: Cambria, Garamond, "Book Antiqua", serif;
+}
+
+/* NAVBAR */
+nav{
+display:flex;
+justify-content:center;
+gap:15px;
+background:#0b1e3d;
+padding:14px;
+border-bottom:1px solid rgba(255,255,255,0.1);
+}
+
+nav button{
+background:none;
+border:none;
+color:#ffffff;
+font-size:16px;
+cursor:pointer;
+transition:0.3s;
+}
+
+nav button:hover{
+opacity:0.7;
+}
+
+/* CONTAINER */
+.container{
+max-width:900px;
+margin:auto;
+padding:30px;
+}
+
+/* HEADINGS */
+h1,h2,h3{
+font-weight:normal;
+letter-spacing:0.5px;
+}
+
+/* CARD */
+.card{
+background:#1c2f4f;
+padding:20px;
+border-radius:12px;
+margin:15px 0;
+border:1px solid rgba(255,255,255,0.08);
+transition:0.2s;
+}
+
+/* BUTTON */
+button.main{
+background:#f1f1f1;
+color:#0b1e3d;
+border:none;
+padding:12px;
+width:100%;
+border-radius:8px;
+cursor:pointer;
+margin-top:15px;
+font-weight:bold;
+}
+
+button.main:hover{
+opacity:0.85;
+}
+
+/* INPUT */
+select,input{
+width:100%;
+padding:10px;
+margin-top:8px;
+border-radius:6px;
+border:none;
+background:#6b7f9e;
+color:white;
+}
+
+input::placeholder{
+color:white;
+opacity:1;
+}
+
+/* LINKS */
+a{
+color:#ffffff;
+text-decoration:underline;
+}
+
+/* HERO */
+.hero{
+text-align:center;
+margin-top:40px;
+}
+
+.hero p{
+opacity:0.8;
+line-height:1.6;
+}
+
+.hidden{display:none;}
+</style>
+</head>
+
+<body>
+
+<nav>
+<button onclick="show('home')">Home</button>
+<button onclick="show('test')">Assessment</button>
+<button onclick="show('tipe')">Tipe</button>
+<button onclick="show('jurusan')">Jurusan</button>
+<button onclick="show('karier')">Karier</button>
+<button onclick="show('explore')">Explore</button>
+</nav>
+
+<div class="container">
+
+<!-- HOME -->
+<div id="home">
+<div class="hero">
+<h1>Find Your Purpose (FYP) 🌱</h1>
+
+<p>
+FYP adalah platform eksplorasi karier berbasis psikologi yang membantu siswa 
+memahami minat, kepribadian, dan nilai hidup mereka.
+</p>
+
+<p>
+Melalui assessment RIASEC, kamu akan mendapatkan gambaran tipe kepribadianmu, 
+rekomendasi jurusan, serta pilihan karier yang sesuai.
+</p>
+
+<div class="card">
+<h3>Cara Menggunakan:</h3>
+<p>1. Kerjakan assessment di menu "Assessment"</p>
+<p>2. Lihat hasil tipe kepribadianmu</p>
+<p>3. Eksplor jurusan & karier yang sesuai</p>
+</div>
+
+</div>
+</div>
+
+<!-- TEST -->
+<div id="test" class="hidden">
+<h2>Career Assessment</h2>
+<div id="questions"></div>
+
+<hr style="margin:30px 0">
+
+<button class="main" onclick="calculate()">Lihat Hasil</button>
+<div id="hasil" style="margin-top:30px;"></div>
+</div>
+
+<!-- TIPE -->
+<div id="tipe" class="hidden">
+<h2>Tipe Kamu</h2>
+<div id="tipeDetail"></div>
+</div>
+
+<!-- JURUSAN -->
+<div id="jurusan" class="hidden">
+<h2>Jurusan</h2>
+
+<input id="searchJurusan" placeholder="Cari jurusan..." onkeyup="renderJurusan()">
+
+<select id="filterJurusan" onchange="renderJurusan()">
+<option value="all">Semua</option>
+<option value="my">Sesuai Hasil Saya</option>
+<option value="R">Realistic</option>
+<option value="I">Investigative</option>
+<option value="A">Artistic</option>
+<option value="S">Social</option>
+<option value="E">Enterprising</option>
+<option value="C">Conventional</option>
+</select>
+
+<div id="jurusanList"></div>
+</div>
+
+<!-- KARIER -->
+<div id="karier" class="hidden">
+<h2>Karier</h2>
+
+<input id="searchKarier" placeholder="Cari karier..." onkeyup="renderKarier()">
+
+<select id="filterKarier" onchange="renderKarier()">
+<option value="all">Semua</option>
+<option value="my">Sesuai Hasil Saya</option>
+<option value="R">Realistic</option>
+<option value="I">Investigative</option>
+<option value="A">Artistic</option>
+<option value="S">Social</option>
+<option value="E">Enterprising</option>
+<option value="C">Conventional</option>
+</select>
+
+<div id="karierList"></div>
+</div>
+
+<!-- EXPLORE -->
+<div id="explore" class="hidden">
+<h2>Explore Resources</h2>
+
+<p style="opacity:0.8;">
+Temukan informasi terbaru tentang jurusan, karier, dan dunia kerja melalui konten edukatif dari berbagai platform.
+</p>
+
+<div class="card">
+<h3>Instagram</h3>
+<ul>
+<li><a href="https://www.instagram.com/ruangguru/" target="_blank">Ruangguru</a></li>
+<li><a href="https://www.instagram.com/zenius.education/" target="_blank">Zenius</a></li>
+<li><a href="https://www.instagram.com/kelaskaryawan.id/" target="_blank">Kelaskaryawan</a></li>
+<li><a href="https://www.instagram.com/edukasi.karier/" target="_blank">Edukasi Karier</a></li>
+</ul>
+</div>
+
+<div class="card">
+<h3>YouTube</h3>
+<ul>
+<li><a href="https://www.youtube.com/@ZeniusEducation" target="_blank">Zenius Education</a></li>
+<li><a href="https://www.youtube.com/@Ruangguru" target="_blank">Ruangguru</a></li>
+<li><a href="https://www.youtube.com/@KokBisa" target="_blank">Kok Bisa?</a></li>
+<li><a href="https://www.youtube.com/@SatuPersenIndonesianLifeSchool" target="_blank">Satu Persen</a></li>
+</ul>
+</div>
+
+<div class="card">
+<h3>Tips</h3>
+<p>
+Gunakan sumber ini untuk memahami realita jurusan dan karier secara lebih mendalam,
+mulai dari pengalaman mahasiswa hingga dunia kerja.
+</p>
+</div>
+
+</div>
+
+</div>
+
+<script>
+
+// DATA JURUSAN
+let jurusanData = [
+{name:"Psikologi", tipe:"S", desc:"Mempelajari perilaku manusia, emosi, dan mental.", kampus:"UI, UGM, UNPAD, UNAIR"},
+{name:"Kedokteran", tipe:"S", desc:"Mempelajari diagnosis dan pengobatan penyakit.", kampus:"UI, UGM, UNAIR, UNS"},
+{name:"Informatika", tipe:"I", desc:"Belajar pemrograman, AI, dan sistem komputer.", kampus:"ITB, UI, BINUS"},
+{name:"Teknik Sipil", tipe:"R", desc:"Mempelajari konstruksi bangunan.", kampus:"ITB, UGM, UNDIP"},
+{name:"DKV", tipe:"A", desc:"Belajar desain grafis.", kampus:"ITB, BINUS, ISI"},
+{name:"Manajemen", tipe:"E", desc:"Belajar bisnis.", kampus:"UI, UGM"},
+{name:"Akuntansi", tipe:"C", desc:"Mempelajari laporan keuangan.", kampus:"UI, UGM"}
+];
+
+// DATA KARIER
+let karierData = [
+{name:"Psikolog", tipe:"S", desc:"Membantu kesehatan mental.", gaji:"Rp5–15jt"},
+{name:"Dokter", tipe:"S", desc:"Merawat pasien.", gaji:"Rp8–30jt"},
+{name:"Programmer", tipe:"I", desc:"Membuat software.", gaji:"Rp6–20jt"},
+{name:"Engineer", tipe:"R", desc:"Membangun sistem.", gaji:"Rp6–18jt"},
+{name:"Desainer", tipe:"A", desc:"Membuat visual.", gaji:"Rp4–15jt"},
+{name:"Entrepreneur", tipe:"E", desc:"Bisnis sendiri.", gaji:"tidak tetap"},
+{name:"Akuntan", tipe:"C", desc:"Mengelola keuangan.", gaji:"Rp5–15jt"}
+];
+
+// QUESTIONS
+let questions = [
+
+["R","Saya menikmati bekerja dengan alat atau mesin"],
+["R","Saya suka aktivitas fisik atau lapangan"],
+["R","Saya tertarik pada pekerjaan teknis"],
+["R","Saya suka memperbaiki sesuatu"],
+["R","Saya nyaman bekerja di luar ruangan"],
+["R","Saya suka pekerjaan yang praktis"],
+
+["I","Saya suka memecahkan masalah kompleks"],
+["I","Saya menikmati penelitian atau eksperimen"],
+["I","Saya suka menganalisis data"],
+["I","Saya tertarik pada sains"],
+["I","Saya suka berpikir kritis"],
+["I","Saya suka mencari tahu bagaimana sesuatu bekerja"],
+
+["A","Saya suka mengekspresikan diri secara kreatif"],
+["A","Saya menikmati seni atau desain"],
+["A","Saya punya imajinasi tinggi"],
+["A","Saya tidak suka aturan yang terlalu kaku"],
+["A","Saya suka menciptakan sesuatu"],
+["A","Saya tertarik pada musik, tulisan, atau visual"],
+
+["S","Saya suka membantu orang lain"],
+["S","Saya nyaman berinteraksi sosial"],
+["S","Saya ingin pekerjaan yang berdampak"],
+["S","Saya suka bekerja dalam tim"],
+["S","Saya mudah memahami perasaan orang lain"],
+["S","Saya suka mengajar atau membimbing"],
+
+["E","Saya suka memimpin"],
+["E","Saya tertarik pada bisnis"],
+["E","Saya percaya diri mempengaruhi orang lain"],
+["E","Saya suka mengambil keputusan"],
+["E","Saya tertarik pada kewirausahaan"],
+["E","Saya suka berbicara di depan umum"],
+
+["C","Saya suka pekerjaan yang terstruktur"],
+["C","Saya teliti"],
+["C","Saya nyaman dengan data dan angka"],
+["C","Saya suka mengikuti prosedur"],
+["C","Saya rapi dan terorganisir"],
+["C","Saya suka pekerjaan administratif"],
+
+// VALUES
+["S","Saya ingin membantu banyak orang dalam hidup saya"],
+["E","Kesuksesan dan pencapaian sangat penting bagi saya"],
+["A","Kebebasan berekspresi penting bagi saya"],
+["C","Stabilitas dan keamanan penting bagi saya"],
+["I","Pengetahuan dan pembelajaran penting bagi saya"],
+["R","Saya ingin bekerja secara langsung (hands-on)"],
+
+// ACTIVITIES
+["A","Saya sering melakukan kegiatan kreatif"],
+["S","Saya sering membantu atau mendengarkan orang"],
+["I","Saya suka membaca atau belajar hal baru"],
+["R","Saya suka aktivitas fisik atau praktek"],
+["E","Saya suka mengorganisir kegiatan"],
+["C","Saya suka merapikan atau mengatur sesuatu"]
+
+];
+
+// RENDER QUESTIONS
+let qHTML="";
+questions.forEach((q,i)=>{
+qHTML+=`
+<div class="card">
+<p>${q[1]}</p>
+<select id="q${i}">
+<option value="1">1</option>
+<option value="2">2</option>
+<option value="3">3</option>
+<option value="4">4</option>
+<option value="5">5</option>
+</select>
+</div>`;
+});
+document.getElementById("questions").innerHTML=qHTML;
+
+// NAV
+function show(page){
+["home","test","tipe","jurusan","karier","explore"].forEach(p=>{
+document.getElementById(p).classList.add("hidden");
+});
+document.getElementById(page).classList.remove("hidden");
+
+if(page==="tipe") loadTipeDetail();
+if(page==="jurusan") renderJurusan();
+if(page==="karier") renderKarier();
+}
+
+// CALCULATE
+function calculate(){
+let score={R:0,I:0,A:0,S:0,E:0,C:0};
+
+questions.forEach((q,i)=>{
+score[q[0]]+=parseInt(document.getElementById("q"+i).value);
+});
+
+let sorted=Object.entries(score).sort((a,b)=>b[1]-a[1]);
+let code=sorted.slice(0,3).map(x=>x[0]).join("-");
+
+localStorage.setItem("riasec",code);
+
+document.getElementById("hasil").innerHTML=`
+<h3>Kode kamu: ${code}</h3>
+<button class="main" onclick="show('tipe')">Lihat Penjelasan</button>
+`;
+}
+
+// TIPE DETAIL
+function loadTipeDetail(){
+let code=localStorage.getItem("riasec")||"";
+
+let desc={
+R:"Realistic: suka praktik & lapangan.",
+I:"Investigative: analitis & riset.",
+A:"Artistic: kreatif & ekspresif.",
+S:"Social: suka bantu orang.",
+E:"Enterprising: leadership & bisnis.",
+C:"Conventional: rapi & terstruktur."
+};
+
+let html="";
+code.split("-").forEach(c=>{
+html+=`
+<div class="card">
+<h3>${c}</h3>
+<p>${desc[c]}</p>
+</div>`;
+});
+
+document.getElementById("tipeDetail").innerHTML=html;
+}
+
+// JURUSAN
+function renderJurusan(){
+let search=document.getElementById("searchJurusan").value.toLowerCase();
+let filter=document.getElementById("filterJurusan").value;
+let my=localStorage.getItem("riasec")||"";
+
+let html="";
+
+jurusanData.forEach(j=>{
+let matchSearch=j.name.toLowerCase().includes(search);
+let matchFilter=true;
+
+if(filter==="my") matchFilter=my.includes(j.tipe);
+else if(filter!=="all") matchFilter=j.tipe===filter;
+
+if(matchSearch && matchFilter){
+html+=`
+<div class="card">
+<h3>${j.name}</h3>
+<p><b>Belajar:</b> ${j.desc}</p>
+<p><b>Kampus:</b> ${j.kampus}</p>
+</div>`;
+}
+});
+
+document.getElementById("jurusanList").innerHTML=html;
+}
+
+// KARIER
+function renderKarier(){
+let search=document.getElementById("searchKarier").value.toLowerCase();
+let filter=document.getElementById("filterKarier").value;
+let my=localStorage.getItem("riasec")||"";
+
+let html="";
+
+karierData.forEach(k=>{
+let matchSearch=k.name.toLowerCase().includes(search);
+let matchFilter=true;
+
+if(filter==="my") matchFilter=my.includes(k.tipe);
+else if(filter!=="all") matchFilter=k.tipe===filter;
+
+if(matchSearch && matchFilter){
+html+=`<div class="card"><h3>${k.name}</h3><p>${k.desc}</p><p><b>Gaji:</b> ${k.gaji}</p></div>`;
+}
+});
+
+document.getElementById("karierList").innerHTML=html;
+}
+
+</script>
+
+</body>
+</html>
